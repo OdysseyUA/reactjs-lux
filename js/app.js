@@ -1,6 +1,7 @@
 require("bootstrap/dist/css/bootstrap.css");
 import React from 'react';
 import {render} from 'react-dom';
+import PropTypes from 'prop-types';
 
 const dataSource = [
     {firstName: "John", lastName: "Doe", active: false},
@@ -22,6 +23,18 @@ class GridRecord extends React.Component {
     }
 }
 
+GridRecord.propTypes = {
+    record: PropTypes.shape({
+        firstName: PropTypes.string.isRequired,
+        lastName: PropTypes.string.isRequired,
+        active: PropTypes.bool.isRequired
+    })
+};
+
+GridRecord.defaultProps = {
+    record: {firstName: "N/A", lastName: "N/A", active: false}
+};
+
 class GridComponent extends React.Component {
 
     constructor() {
@@ -32,6 +45,7 @@ class GridComponent extends React.Component {
     }
 
     componentDidMount() {
+        this.refs.filterInput && this.refs.filterInput.focus();
         this.setState({
             records: dataSource
         })
@@ -45,6 +59,14 @@ class GridComponent extends React.Component {
         })
     }
 
+    handleFilterChange(e) {
+        let value = e.target.value,
+            records = dataSource.filter((record) => record.firstName.toUpperCase().includes(value.toUpperCase()));
+        this.setState({
+            records: records
+        });
+    }
+
 
     render() {
         let records = this.state.records.map((record, index) => {
@@ -54,7 +76,9 @@ class GridComponent extends React.Component {
         return (
             <div style={{width: 300, height: 300, padding: 20}}>
                 <p>
-                    <input type="text" placeholder="Filter by..."/>
+                    {/*<input type="text" placeholder="Filter by..." onChange={this.handleFilterChange.bind(this)}/>*/}
+                    <input type="text" ref="filterInput" placeholder="Filter by..."
+                           onChange={this.handleFilterChange.bind(this)}/>
                 </p>
                 <table className="table table-condensed">
                     <thead>
@@ -65,17 +89,41 @@ class GridComponent extends React.Component {
                     </tr>
                     </thead>
                     <tbody>
-                        {records}
+                    {records}
                     </tbody>
                 </table>
+                <div>{this.props.children &&
+                React.cloneElement(this.props.children, { records: this.state.records })}</div>
             </div>
+
         )
     }
 }
 
 
+class SummaryActive extends React.Component {
+    render() {
+        return (
+            <div>Active Users: {this.props.records.filter((record) => record.active).length}</div>
+        )
+    }
+}
+
+class SummaryUsers extends React.Component {
+    render() {
+        return (
+            <div>Users Count: {this.props.records.length}</div>
+        )
+    }
+}
+
+
+
+
 render(
-    <GridComponent/>,
-    document.getElementById('app'),
-    () => console.log('Hello world!')
+    <GridComponent>
+        <SummaryActive/>
+        {/*<SummaryUsers/>*/}
+    </GridComponent>,
+    document.getElementById('app')
 );
