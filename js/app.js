@@ -19,7 +19,7 @@ class GridRecord extends React.Component {
 		return <tr>
 			<th>{record.firstName}</th>
 			<th>{record.lastName}</th>
-			<th><input type="checkbox" checked={record.active}/></th>
+			<th><input type="checkbox" checked={record.active} onChange={this.props.toggleActive}/></th>
 		</tr>
 	}
 }
@@ -41,16 +41,30 @@ class GridComponent extends React.Component {
 		})
 	}
 
+	toggleActive(index) {
+		let {records} = this.state;
+
+		records[index].active = !records[index].active;
+
+		this.setState({
+			records: records
+		})
+	}
+
 	render() {
-		let records = this.state.records.map((record) => {
+		let records = this.state.records.map((record, index) => {
 				console.log('the record: ' + JSON.stringify(record));
-				return <GridRecord record={record}/>
+				return <GridRecord record={record} key={index} toggleActive={this.toggleActive.bind(this, index)}/>
 			}
 		);
 
-		// records.map((r) => console.log(JSON.stringify(r)));
-		// console.log('records in render: ' + JSON.stringify(records.record));
-		console.log('records in render: ' + records);
+		console.log('============================================');
+
+		/*
+		 records.map((r) => console.log(JSON.stringify(r)));
+		 console.log('records in render: ' + JSON.stringify(records.record));
+		 */
+		// console.log('records in render: ' + records);
 
 		return (
 			<div style={{width: 300, height: 300, padding: 20}}>
