@@ -16,12 +16,13 @@ class GridRecord extends React.Component {
 	render() {
 		let {record} = this.props;
 
+		console.log('props: ' + JSON.stringify(this.props));
 		// console.log('props: ' + JSON.stringify(this.props));
 
 		return <tr>
 			<th>{record.firstName}</th>
 			{/*<th>{record.lastName} {this.props.key}</th>*/}
-			<th>{record.lastName}</th>
+			<th>{record.lastName} {this.props.test}</th>
 			<th>{record.firstName} {record.lastName}</th>
 			<th><input type="checkbox" checked={record.active} onChange={this.props.changeActive}/></th>
 		</tr>
@@ -29,7 +30,11 @@ class GridRecord extends React.Component {
 }
 
 GridRecord.defaultProps = {
-	record: {firstName: "N/A", lastName: "N/A", active: false}
+	record: {
+		firstName: "N/A",
+		lastName: "N/A",
+		active: false
+	}
 };
 
 GridRecord.propTypes = {
@@ -57,7 +62,7 @@ export default class GridComponent extends React.Component {
 		this.refs.filterInput && this.refs.filterInput.focus();
 		this.setState({
 			records: dataSource
-		})
+		});
 	}
 
 	toggleActive(index) {
@@ -76,6 +81,7 @@ export default class GridComponent extends React.Component {
 			records = dataSource.filter(
 				(record) => record.firstName.toUpperCase().includes(value.toUpperCase())
 			);
+
 		this.setState({
 			records: records
 		});
@@ -83,7 +89,7 @@ export default class GridComponent extends React.Component {
 
 	render() {
 		let records = this.state.records.map((record, index) => {
-				console.log('the record: ' + JSON.stringify(record));
+				// console.log('the record: ' + JSON.stringify(record));
 				return <GridRecord
 					record={record}
 					key={index}
