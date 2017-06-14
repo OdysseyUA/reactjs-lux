@@ -18,8 +18,10 @@ class GridRecord extends React.Component {
 
 		return <tr>
 			<th>{record.firstName}</th>
+			{/*<th>{record.lastName} {this.props.key}</th>*/}
 			<th>{record.lastName}</th>
-			<th><input type="checkbox" checked={record.active} onChange={this.props.toggleActive}/></th>
+			<th>{record.firstName} {record.lastName}</th>
+			<th><input type="checkbox" checked={record.active} onChange={this.props.changeActive}/></th>
 		</tr>
 	}
 }
@@ -54,7 +56,11 @@ class GridComponent extends React.Component {
 	render() {
 		let records = this.state.records.map((record, index) => {
 				console.log('the record: ' + JSON.stringify(record));
-				return <GridRecord record={record} key={index} toggleActive={this.toggleActive.bind(this, index)}/>
+				return <GridRecord
+					record={record}
+					key={index}
+					changeActive={this.toggleActive.bind(this, index)}
+				/>
 			}
 		);
 
@@ -67,7 +73,7 @@ class GridComponent extends React.Component {
 		// console.log('records in render: ' + records);
 
 		return (
-			<div style={{width: 300, height: 300, padding: 20}}>
+			<div style={{width: 500, height: 300, padding: 20}}>
 				<p>
 					<input type="text" placeholder="Filter by..."/>
 				</p>
@@ -76,6 +82,7 @@ class GridComponent extends React.Component {
 					<tr>
 						<th>Firstname</th>
 						<th>Lastname</th>
+						<th>Fullname</th>
 						<th>Active</th>
 					</tr>
 					</thead>
