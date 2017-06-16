@@ -36,13 +36,14 @@ export default class UserDetails extends React.Component {
 							<div className="col-sm-12">
 								<div className="col-xs-12 col-sm-8">
 									<h2>Nicole Pearson</h2>
-									<p><strong>About: </strong> {user.prof} / UI. </p>
+									<p><strong>About: </strong> {user.prof} </p>
 									<p><strong>Hobbies: </strong> {user.hobbies} </p>
 									<p><strong>Skills: </strong>
-										<span className="tags">html5</span>
-										<span className="tags">css3</span>
-										<span className="tags">jquery</span>
-										<span className="tags">bootstrap3</span>
+										{/*<span className="tags">html5</span>*/}
+										{/*<span className="tags">css3</span>*/}
+										{/*<span className="tags">jquery</span>*/}
+										{/*<span className="tags">bootstrap3</span>*/}
+										{user.skills.map((skill, index) => {return <span key={index} className="tags" style={{margin: 5}}>{skill}</span>})}
 									</p>
 								</div>
 								<div className="col-xs-12 col-sm-4 text-center">
