@@ -3,28 +3,38 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
+import {hashHistory, Link} from 'react-router';
 
 
 const dataSource = [
-	{firstName: "John", lastName: "Doe", active: false},
-	{firstName: "Mary", lastName: "Moe", active: false},
-	{firstName: "Peter", lastName: "Noname", active: true}
+	{firstName: "John", lastName: "Doe", active: false, id:1},
+	{firstName: "Mary", lastName: "Moe", active: false, id:2},
+	{firstName: "Peter", lastName: "Noname", active: true, id:3}
 ];
 
 
 class GridRecord extends React.Component {
-	render() {
-		let {record, changeActive, test} = this.props;
 
-		console.log('props: ' + JSON.stringify(this.props));
+	showUserDetails(e) {
+		e.preventDefault();
+		hashHistory.push(`/details/${this.props.record.id}`);
+	}
+
+
+	render() {
+		let {record} = this.props;
+
+		// console.log('props: ' + JSON.stringify(this.props));
 		// console.log('props: ' + JSON.stringify(this.props));
 
 		return <tr>
+			{/*<th onClick={this.showUserDetails.bind(this)}> <a href="#">{record.id}</a> </th>*/}
+			<th> <Link to={`/details/${this.props.record.id}`}>{record.id}</Link> </th>
 			<th>{record.firstName}</th>
-			{/*<th>{record.lastName} {this.props.key}</th>*/}
-			<th>{record.lastName} {this.props.test}</th>
-			<th>{record.firstName} {record.lastName}</th>
-			<th><input type="checkbox" checked={record.active} onChange={this.props.changeActive}/></th>
+			<th>{record.lastName}</th>
+			<th>
+				<input type="checkbox" checked={record.active} onChange={this.props.toggleActive}/>
+			</th>
 		</tr>
 	}
 }
@@ -110,14 +120,15 @@ export default class GridComponent extends React.Component {
 		return (
 			<div style={{width: 500, height: 300, padding: 20}}>
 				<p>
-					<input type="text" ref="filterInput" placeholder="Filter by..." onChange={this.handleFilterChange.bind(this)}/>
+					<input type="text" ref="filterInput" placeholder="Filter by..."
+						   onChange={this.handleFilterChange.bind(this)}/>
 				</p>
 				<table className="table table-condensed">
 					<thead>
 					<tr>
-						<th>Firstname</th>
-						<th>Lastname</th>
-						<th>Fullname</th>
+						<th>Id</th>
+						<th>First Name</th>
+						<th>Last Name</th>
 						<th>Active</th>
 					</tr>
 					</thead>

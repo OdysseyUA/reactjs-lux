@@ -30,6 +30,7 @@ export default class UserDetails extends React.Component {
 	render() {
 		return (
 			<div className="container">
+				<h2>THIS IS PARAM FROM GRIDCOMPONENT: {this.props.params.id}</h2>
 				<div className="row">
 					<div className="col-md-offset-2 col-md-8 col-lg-offset-3 col-lg-6">
 						<div className="well profile">
