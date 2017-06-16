@@ -14,7 +14,7 @@ const dataSource = [
 
 class GridRecord extends React.Component {
 	render() {
-		let {record} = this.props;
+		let {record, changeActive, test} = this.props;
 
 		console.log('props: ' + JSON.stringify(this.props));
 		// console.log('props: ' + JSON.stringify(this.props));
@@ -43,8 +43,9 @@ GridRecord.propTypes = {
 			firstName: PropTypes.string.isRequired,
 			lastName: PropTypes.string.isRequired,
 			active: PropTypes.bool.isRequired
-		}
-	)
+		},
+	),
+	test: PropTypes.string
 };
 
 
@@ -91,8 +92,8 @@ export default class GridComponent extends React.Component {
 		let records = this.state.records.map((record, index) => {
 				// console.log('the record: ' + JSON.stringify(record));
 				return <GridRecord
-					record={record}
 					key={index}
+					record={record}
 					changeActive={this.toggleActive.bind(this, index)}
 				/>
 			}
@@ -109,7 +110,7 @@ export default class GridComponent extends React.Component {
 		return (
 			<div style={{width: 500, height: 300, padding: 20}}>
 				<p>
-					<input type="text" placeholder="Filter by..." onChange={this.handleFilterChange.bind(this)}/>
+					<input type="text" ref="filterInput" placeholder="Filter by..." onChange={this.handleFilterChange.bind(this)}/>
 				</p>
 				<table className="table table-condensed">
 					<thead>

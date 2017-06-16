@@ -4,12 +4,11 @@ import {render} from 'react-dom';
 
 import GridComponent from './grid';
 import {SummaryActive, SummaryUsers} from './summaries';
+import UserDetails from './user-details';
 
 
 render(
-	<GridComponent>
-		<SummaryActive/>
-	</GridComponent>,
+	<UserDetails/>,
 	document.getElementById('app'),
 	()=>console.log('component render callback')
 );
