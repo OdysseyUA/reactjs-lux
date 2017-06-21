@@ -5,8 +5,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {hashHistory, Link} from 'react-router';
 
-import {connect} from 'react-redux';
-
+import { connect } from 'react-redux'
+import UserDetail from './user-detail';
 
 class GridRecord extends React.Component {
 
@@ -81,14 +81,14 @@ class GridComponent extends React.Component {
 
 
 	handleFilterChange(e) {
-		let value = e.target.value,
-			records = dataSource.filter(
-				(record) => record.firstName.toUpperCase().includes(value.toUpperCase())
-			);
+		let {dispatch} = this.props;
 
-		this.setState({
-			records: records
-		});
+		dispatch(
+			{
+				type: "FILTER",
+				value: e.target.value
+			}
+		);
 	}
 
 	render() {

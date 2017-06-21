@@ -29,7 +29,12 @@ export function grid(state = gridRecords, action) {
 			newState[action.value].active = !newState[action.value].active;
 			return newState;
 		case "FILTER":
-		//Filter will be implemented later
+			let newFilter = state;
+			if(action.value === '') {
+				return gridRecords;
+			}
+			return newFilter.filter((record) => record.firstName.toUpperCase().includes(action.value.toUpperCase()));
+
 		default:
 			return state
 	}
