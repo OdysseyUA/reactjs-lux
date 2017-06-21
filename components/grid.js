@@ -5,12 +5,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {hashHistory, Link} from 'react-router';
 
-
-const dataSource = [
-	{firstName: "John", lastName: "Doe", active: false, id:1},
-	{firstName: "Mary", lastName: "Moe", active: false, id:2},
-	{firstName: "Peter", lastName: "Noname", active: true, id:3}
-];
+import {connect} from 'react-redux';
 
 
 class GridRecord extends React.Component {
@@ -29,11 +24,11 @@ class GridRecord extends React.Component {
 
 		return <tr>
 			{/*<th onClick={this.showUserDetails.bind(this)}> <a href="#">{record.id}</a> </th>*/}
-			<th> <Link to={`/details/${this.props.record.id}`}>{record.id}</Link> </th>
+			<th><Link to={`/details/${this.props.record.id}`}>{record.id}</Link></th>
 			<th>{record.firstName}</th>
 			<th>{record.lastName}</th>
 			<th>
-				<input type="checkbox" checked={record.active} onChange={this.props.toggleActive}/>
+				<input type="checkbox" checked={record.active} onChange={this.props.changeActive}/>
 			</th>
 		</tr>
 	}
@@ -59,7 +54,7 @@ GridRecord.propTypes = {
 };
 
 
-export default class GridComponent extends React.Component {
+class GridComponent extends React.Component {
 
 	constructor() {
 		super();
@@ -71,19 +66,17 @@ export default class GridComponent extends React.Component {
 	//	componentWillMount() (def: componentDidMount)
 	componentDidMount() {
 		this.refs.filterInput && this.refs.filterInput.focus();
-		this.setState({
-			records: dataSource
-		});
 	}
 
 	toggleActive(index) {
-		let {records} = this.state;
+		let {dispatch} = this.props;
 
-		records[index].active = !records[index].active;
-
-		this.setState({
-			records: records
-		})
+		dispatch(
+			{
+				type: "TOGGLE_ACTIVE",
+				value: index
+			}
+		);
 	}
 
 
@@ -134,7 +127,14 @@ export default class GridComponent extends React.Component {
 					</thead>
 
 					<tbody>
-					{records}
+					{
+						this.props.records.map((record, index)=> {
+							return <GridRecord record={record}
+											   key={index}
+											   changeActive={this.toggleActive.bind(this, index)}
+							/>
+						})
+					}
 					</tbody>
 
 				</table>
@@ -145,3 +145,17 @@ export default class GridComponent extends React.Component {
 		)
 	}
 }
+
+
+GridComponent.propTypes = {
+	records: PropTypes.array.isRequired
+};
+
+function mapStateToProps(state) {
+	return {
+		records: state.grid
+	}
+}
+
+
+export default connect(mapStateToProps)(GridComponent)
